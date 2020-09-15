@@ -11,8 +11,10 @@ class AccountsController < ApplicationController
   def create 
     @account = current_user.accounts.new(account_params)
     if @account.save
+      flash[:success] = 'Account created'
       redirect_to root_path
     else
+      flash[:error] = "Error #{@account.errors.full_messages.join("\n")}"
       render :new
     end
   end
@@ -20,13 +22,16 @@ class AccountsController < ApplicationController
   end
   def update
     if @account.update(account_params)
+      flash[:success] = 'Account updated'
       redirect_to root_path
     else
+      flash[:error] = "Error #{@account.errors.full_messages.join("\n")}"
       render :edit
     end
   end
   def destroy
     @account.destroy
+    flash[:success] = 'Account deleted'
     redirect_to root_path
   end
   private
